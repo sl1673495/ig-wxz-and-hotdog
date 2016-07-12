@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "webpack --watch",
+        "dev": "webpack -p",
         "server": "webpack-dev-server --inline --hot --color --port 8082"
     },
     "author": "",
