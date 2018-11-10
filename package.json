@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "webpack -p",
-        "server": "webpack-dev-server --inline --hot --color --port 8082"
+        "server": "webpack-dev-server --inline --progress --config webpack.config.js"
     },
     "author": "",
     "license": "ISC",
@@ -17,5 +17,8 @@
         "babel-preset-stage-0": "^6.5.0",
         "webpack": "^1.13.1",
         "webpack-dev-server": "^1.14.1"
+    },
+    "dependencies": {
+        "url-loader": "^1.1.2"
     }
 }
