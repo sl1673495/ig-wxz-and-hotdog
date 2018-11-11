@@ -12,6 +12,11 @@ export const WEAPON_OPTIONS = {
     interval: 15,
 }
 
+export const DIALOG_OPTIONS = {
+    width: 250,
+    height: 200,
+}
+
 export const SCORE_EVENT = 'score'
 
 export const FALL_END_EVENT = 'fallEnd'

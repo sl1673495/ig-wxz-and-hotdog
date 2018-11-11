@@ -1,13 +1,7 @@
-import Player from './modules/player'
-import Fall from './modules/fall'
-import Score from './modules/score'
+import Scheduler from './modules/scheduler'
 
 function initGame() {
-    new Player()
-    new Score()
-    setInterval(() => {
-        new Fall()
-    }, 200)
+    new Scheduler()
 }
 
 initGame()

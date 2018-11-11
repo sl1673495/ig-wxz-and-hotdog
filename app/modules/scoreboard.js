@@ -4,8 +4,15 @@ export default class Score {
     constructor() {
         this.$el = null
         this.score = 0
+        this.stop = false
         this.initScore()
         this.initEvent()
+    }
+
+    reset() {
+        this.score = 0
+        this.stop = false
+        this.setScore()
     }
 
     initScore() {
@@ -13,7 +20,6 @@ export default class Score {
         score.style.cssText = `
             position: fixed;
             z-index: 2;
-            background: #f7f7f7;
             width: 100px;
             height: 50px;
             line-height: 50px;
@@ -31,12 +37,22 @@ export default class Score {
 
     initEvent() {
         eventEmitter.on(SCORE_EVENT, () => {
-            this.addScore()
+            if (!this.stop) {
+                this.addScore()
+            }
         })
     }
 
     addScore() {
-        this.score ++
+        this.score++
+        this.setScore()
+    }
+
+    setScore() {
         this.$el.innerText = this.score
+    }
+
+    stopRecord() {
+        this.stop = true
     }
 }

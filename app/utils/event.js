@@ -22,6 +22,10 @@ class EventEmitter {
         }
     }
 
+    remove(name) {
+        this._event[name] = null
+    }
+
     clear() {
         this._event = {}
     }

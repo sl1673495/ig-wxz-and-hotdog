@@ -1,4 +1,4 @@
-import { screenWidth, PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, FALL_END_EVENT } from '@/utils'
+import { screenWidth, addEvent, PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, FALL_END_EVENT, } from '@/utils'
 
 const { width: playerWidth, height: playerHeight, img } = PLYAYER_OPTIONS
 
@@ -28,11 +28,14 @@ export default class Player {
 
     initMoveEvent() {
         const body = document.body
-        body.addEventListener('touchstart', e => {
+        addEvent(body, 'touchstart', e => {
             setPositionX(this, e)
         })
-        body.addEventListener('touchmove', e => {
+        addEvent(body, 'touchmove', e => {
+            e.preventDefault()
             setPositionX(this, e)
+        }, {
+            passive: false
         })
     }
 
