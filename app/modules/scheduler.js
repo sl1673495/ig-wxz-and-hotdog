@@ -6,9 +6,9 @@ import dialog from './dialog';
 // 游戏时间
 const GAME_TIMES = 30
 // 初始掉落间隔
-const FALL_INTERVAL = 400
+const FALL_INTERVAL = 500
 // 每次提速
-const SPEED_UP_INTERVAL = 70
+const SPEED_UP_INTERVAL = 100
 // 最低掉落间隔
 const MIN_INTERVAL = 50
 
@@ -45,10 +45,15 @@ export default class Scheduler {
         this.$el = board
     }
 
-    gameStart() {
-        this.score.reset()
+    reset() {
         this.times = GAME_TIMES
         this.renderTimerText()
+        this.fallInterval = FALL_INTERVAL
+    }
+
+    gameStart() {
+        this.reset()
+        this.score.reset()
         this.setFallTimer()
         this.gameTimer = setInterval(() => {
             this.times--
