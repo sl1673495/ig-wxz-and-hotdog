@@ -48,6 +48,7 @@ export default class Fall {
     updateY() {
         this.moveTimes++
         if (this.moveTimes > this.timesToPlayer) {
+            console.log('end')
             eventEmitter.emit(FALL_END_EVENT, this.posX)
             this.destroy()
             return

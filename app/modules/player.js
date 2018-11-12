@@ -40,8 +40,9 @@ export default class Player {
 
     initCheckFallEvent() {
         eventEmitter.on(FALL_END_EVENT, (posX) => {
-            const playerLeft = this.posX
-            const playerRight = this.posX + playerWidth
+            const playerLeft = this.posX - (playerWidth / 2)
+            const playerRight = this.posX + (playerWidth / 2)
+            console.log(posX, playerLeft, playerRight)
             if (posX > playerLeft && posX < playerRight) {
                 eventEmitter.emit(SCORE_EVENT)
             }
