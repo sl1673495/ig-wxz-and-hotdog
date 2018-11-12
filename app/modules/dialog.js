@@ -1,3 +1,6 @@
+/**
+ * 游戏结束对话框
+ */
 import { screenWidth, DIALOG_OPTIONS, addEvent, removeNode, noop } from '@/utils'
 
 const { width, height } = DIALOG_OPTIONS

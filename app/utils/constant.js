@@ -4,14 +4,6 @@ export const PLYAYER_OPTIONS = {
     height: 70,
 }
 
-export const FALL_OPTIONS = {
-    img: require('@/assets/images/hotdog.png'),
-    width: 20,
-    height: 50,
-    // 移动间隔
-    intervalDistance: 15,
-}
-
 export const DIALOG_OPTIONS = {
     width: 250,
     height: 200,

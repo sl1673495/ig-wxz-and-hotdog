@@ -1,3 +1,6 @@
+/**
+ * 人物
+ */
 import { screenWidth, safeHeight, addEvent, PLYAYER_OPTIONS } from '@/utils'
 
 const { width: playerWidth, height: playerHeight, img } = PLYAYER_OPTIONS

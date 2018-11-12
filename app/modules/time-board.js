@@ -1,9 +1,13 @@
 
+/**
+ * 计时板
+ */
 import { eventEmitter, TIME_CHANGE_EVENT } from '@/utils'
 
 export default class TimeBoard {
   constructor(initTimes) {
-    this.times = initTimes
+    this.$el = null
+    this.residualSeconds = initTimes
     this.initTimerBoard()
     this.initEvent()
   }
@@ -22,22 +26,22 @@ export default class TimeBoard {
             font-size: 30px;
             font-weight: 700;
         `
-    var boardText = document.createTextNode(createTimerText(this.times))
+    var boardText = document.createTextNode(createTimerText(this.residualSeconds))
     board.appendChild(boardText)
     document.body.appendChild(board)
     this.$el = board
   }
 
   initEvent() {
-    eventEmitter.on(TIME_CHANGE_EVENT, (times) => {
-      this.times = times
-      this.renderTimerText(times)
+    eventEmitter.on(TIME_CHANGE_EVENT, (seconds) => {
+      this.residualSeconds = seconds
+      this.renderTimerText(seconds)
     })
   }
 
   renderTimerText() {
-    this.$el.innerText = createTimerText(this.times)
+    this.$el.innerText = createTimerText(this.residualSeconds)
   }
 }
 
-const createTimerText = (times) => `剩余时间${times}秒`
+const createTimerText = (seconds) => `剩余时间${seconds}秒`

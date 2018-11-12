@@ -10,3 +10,10 @@ body,html {
     -ms-user-select:none; /*IE10*/
     user-select:none;
 }
+
+@keyframes bounus
+{
+    0%   {transform: scale(0.8)}
+    50%  {transform: scale(1.5)}
+    100% {transform: scale(1)}
+}

@@ -1,17 +1,21 @@
+/**
+ * 计分板
+ */
 import { eventEmitter, SCORE_EVENT } from '@/utils'
 export default class Score {
     constructor() {
         this.$el = null
         this.score = 0
         this.stop = false
+
         this.initScore()
         this.initEvent()
     }
 
     reset() {
         this.score = 0
-        this.setScore()
         this.stop = false
+        this.setScore()
     }
 
     initScore() {
@@ -35,15 +39,15 @@ export default class Score {
     }
 
     initEvent() {
-        eventEmitter.on(SCORE_EVENT, () => {
+        eventEmitter.on(SCORE_EVENT, (bounus) => {
             if (!this.stop) {
-                this.addScore()
+                this.addScore(bounus)
             }
         })
     }
 
-    addScore() {
-        this.score++
+    addScore(bounus) {
+        this.score += bounus
         this.setScore()
     }
 
