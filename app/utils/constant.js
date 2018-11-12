@@ -21,4 +21,4 @@ export const DIALOG_OPTIONS = {
 export const SCORE_EVENT = 'score'
 
 // 坠落到底事件
-export const FALL_END_EVENT = 'fallEnd'
+export const CHECK_FALL_EVENT = 'checkFall'

@@ -1,4 +1,4 @@
-import { screenWidth, safeHeight, addEvent, PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, FALL_END_EVENT, } from '@/utils'
+import { screenWidth, safeHeight, addEvent, PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, CHECK_FALL_EVENT, } from '@/utils'
 
 const { width: playerWidth, height: playerHeight, img } = PLYAYER_OPTIONS
 
@@ -30,21 +30,27 @@ export default class Player {
         addEvent(body, 'touchstart', e => {
             setPositionX(this, e)
         })
-        addEvent(body, 'touchmove', e => {
-            e.preventDefault()
-            setPositionX(this, e)
-        }, {
-            passive: false
-        })
+        addEvent(
+            body,
+            'touchmove',
+            e => {
+                e.preventDefault()
+                setPositionX(this, e)
+            }, {
+                passive: false
+            }
+        )
     }
 
     initCheckFallEvent() {
-        eventEmitter.on(FALL_END_EVENT, (posX) => {
+        eventEmitter.on(CHECK_FALL_EVENT, (fallInstance) => {
+            const { posX } = fallInstance
             const playerLeft = this.posX - (playerWidth / 2)
             const playerRight = this.posX + (playerWidth / 2)
-            console.log(posX, playerLeft, playerRight)
-            if (posX > playerLeft && posX < playerRight) {
+            // 碰撞到了 就销毁fall实例
+            if (posX >= playerLeft && posX <= playerRight) {
                 eventEmitter.emit(SCORE_EVENT)
+                fallInstance.destroy()
             }
         })
     }

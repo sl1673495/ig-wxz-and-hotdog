@@ -3,7 +3,7 @@ import {
     screenHeight,
     PLYAYER_OPTIONS,
     FALL_OPTIONS,
-    FALL_END_EVENT,
+    CHECK_FALL_EVENT,
     removeNode,
     eventEmitter,
 } from '@/utils'
@@ -19,13 +19,15 @@ const {
     height: playerHeight,
 } = PLYAYER_OPTIONS
 
+// 从生成到落到人物位置需要的总移动次数
+const timesToPlayer = Math.floor((screenHeight - playerHeight) / intervalDistance)
+// 从生成到落到屏幕底部需要的总移动次数
+const timesToEnd = Math.floor(screenHeight / intervalDistance)
 export default class Fall {
     constructor() {
         this.posY = 0
         this.posX = getScreenRandomX()
         this.moveTimes = 0
-        // 总移动次数 
-        this.timesToPlayer = Math.floor((screenHeight - playerHeight) / intervalDistance)
         this.initFall()
         this.startFall()
     }
@@ -47,9 +49,18 @@ export default class Fall {
 
     updateY() {
         this.moveTimes++
-        if (this.moveTimes > this.timesToPlayer) {
-            console.log('end')
-            eventEmitter.emit(FALL_END_EVENT, this.posX)
+
+        // 进入人物范围 生成高频率定时器通知外部计算是否碰撞
+        if (this.moveTimes === timesToPlayer) {
+            if (!this.emitTimer) {
+                this.emitTimer = setInterval(() => {
+                    eventEmitter.emit(CHECK_FALL_EVENT, this)
+                }, 4)
+            }
+        }
+
+        // 到底部了没有被外部通知销毁 就自行销毁
+        if (this.moveTimes === timesToEnd) {
             this.destroy()
             return
         }
@@ -60,6 +71,7 @@ export default class Fall {
     }
 
     destroy() {
+        this.emitTimer && clearInterval(this.emitTimer)
         this.fallTimer && clearInterval(this.fallTimer)
         removeNode(this.$el)
     }

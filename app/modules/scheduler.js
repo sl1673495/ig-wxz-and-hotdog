@@ -101,7 +101,6 @@ export default class Scheduler {
     }
 
     goStar() {
-        console.log('start')
         window.location.href = 'https://github.com/sl1673495/ig-wxz-and-hotdog'
     }
 
