@@ -2,7 +2,7 @@ import { screenWidth, DIALOG_OPTIONS, addEvent, noop } from '@/utils'
 
 const { width, height } = DIALOG_OPTIONS
 
-export default class dialog {
+export default class Dialog {
     constructor(score, onLeftClick, onRightclick) {
         this.score = score
         this.onLeftClick = onLeftClick ? () => {
