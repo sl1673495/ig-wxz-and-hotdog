@@ -2,8 +2,9 @@ import {
     screenWidth,
     screenHeight,
     PLYAYER_OPTIONS,
-    WEAPON_OPTIONS,
+    FALL_OPTIONS,
     FALL_END_EVENT,
+    removeNode,
     eventEmitter,
 } from '@/utils'
 
@@ -11,8 +12,8 @@ const {
     img,
     width,
     height,
-    interval
-} = WEAPON_OPTIONS
+    intervalDistance
+} = FALL_OPTIONS
 
 const {
     height: playerHeight,
@@ -23,8 +24,10 @@ export default class Fall {
         this.posY = 0
         this.posX = getScreenRandomX()
         this.moveTimes = 0
+        // 总移动次数 
+        this.timesToPlayer = Math.floor((screenHeight - playerHeight) / intervalDistance)
         this.initFall()
-        this.shot()
+        this.startFall()
     }
 
     initFall() {
@@ -43,25 +46,25 @@ export default class Fall {
     }
 
     updateY() {
-        // 总移动次数 
-        const timesToPlayer = Math.floor((screenHeight - playerHeight) / interval)
-        const nextY = this.posY + interval
-        this.$el.style.transform = `translateY(${nextY}px)`
-        this.posY = nextY
         this.moveTimes++
-        if (this.moveTimes >= timesToPlayer) {
+        if (this.moveTimes > this.timesToPlayer) {
             eventEmitter.emit(FALL_END_EVENT, this.posX)
             this.destroy()
+            return
         }
+
+        const nextY = this.posY + intervalDistance
+        this.$el.style.transform = `translateY(${nextY}px)`
+        this.posY = nextY
     }
 
     destroy() {
-        this.shotTimer && clearInterval(this.shotTimer)
-        this.$el.remove()
+        this.fallTimer && clearInterval(this.fallTimer)
+        removeNode(this.$el)
     }
 
-    shot() {
-        this.shotTimer = setInterval(() => {
+    startFall() {
+        this.fallTimer = setInterval(() => {
             this.updateY()
         }, 16)
     }

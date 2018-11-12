@@ -47,3 +47,5 @@ export const removeEvent = function (node, event, fn) {
         node.detatchEvent('on' + event, fn);
     }
 }
+
+export const removeNode = (node) => node.parentNode.removeChild(node)

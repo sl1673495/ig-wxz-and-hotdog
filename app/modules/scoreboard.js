@@ -1,5 +1,4 @@
 import { eventEmitter, SCORE_EVENT } from '@/utils'
-
 export default class Score {
     constructor() {
         this.$el = null

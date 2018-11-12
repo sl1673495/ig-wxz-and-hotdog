@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "webpack -p",
-        "server": "webpack-dev-server --inline --progress --config webpack.config.js"
+        "build": "webpack -p",
+        "dev": "webpack-dev-server --inline --progress --config webpack.config.js"
     },
     "author": "",
     "license": "ISC",

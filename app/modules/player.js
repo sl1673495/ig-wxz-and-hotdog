@@ -1,4 +1,4 @@
-import { screenWidth, addEvent, PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, FALL_END_EVENT, } from '@/utils'
+import { screenWidth, safeHeight, addEvent, PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, FALL_END_EVENT, } from '@/utils'
 
 const { width: playerWidth, height: playerHeight, img } = PLYAYER_OPTIONS
 
@@ -16,11 +16,10 @@ export default class Player {
         el.src = img
         el.style.cssText = `
             position: fixed;
-            bottom: 0;
+            bottom: ${safeHeight}px;
             width: ${playerWidth}px;
             height: ${playerHeight}px;
             left:${ screenWidth / 2 - playerWidth / 2}px;
-            transform: rotate(-90deg);
             z-index: 1;
         `
         document.body.appendChild(el)
@@ -53,6 +52,6 @@ export default class Player {
 const setPositionX = (player, e) => {
     const { $el } = player
     const { clientX } = e.touches[0]
-    $el.style.left = `${clientX}px`
+    $el.style.left = `${clientX - (playerWidth / 2)}px`
     player.posX = clientX
 }

@@ -1,4 +1,4 @@
-import { screenWidth, DIALOG_OPTIONS, addEvent, noop } from '@/utils'
+import { screenWidth, DIALOG_OPTIONS, addEvent, removeNode, noop } from '@/utils'
 
 const { width, height } = DIALOG_OPTIONS
 
@@ -43,7 +43,7 @@ export default class Dialog {
     }
 
     destory() {
-        this.$el.remove()
+        removeNode(this.$el)
     }
 }
 
