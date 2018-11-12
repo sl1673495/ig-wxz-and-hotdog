@@ -59,6 +59,16 @@ export default class Player {
 const setPositionX = (player, e) => {
     const { $el } = player
     const { clientX } = e.touches[0]
-    $el.style.left = `${clientX - (playerWidth / 2)}px`
+    $el.style.left = `${checkScreenLimit(clientX - (playerWidth / 2))}px`
     player.posX = clientX
+}
+
+const checkScreenLimit = (x) => {
+    const leftLimit = 0 - (playerWidth / 2)
+    const rightLimit = screenWidth - (playerWidth / 2)
+    return x < leftLimit
+            ? leftLimit
+            : x > rightLimit
+                ? rightLimit 
+                : x
 }
