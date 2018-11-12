@@ -10,8 +10,8 @@ export default class Score {
 
     reset() {
         this.score = 0
-        this.stop = false
         this.setScore()
+        this.stop = false
     }
 
     initScore() {

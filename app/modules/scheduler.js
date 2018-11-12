@@ -1,7 +1,10 @@
+import { PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, CHECK_FALL_EVENT, TIME_CHANGE_EVENT } from '@/utils'
+
 import Fall from './fall'
-import Score from './scoreboard'
+import ScoreBoard from './score-board'
 import Player from './player';
-import dialog from './dialog';
+import Dialog from './dialog';
+import TimeBoard from './time-board';
 
 // 游戏时间
 const GAME_TIMES = 30
@@ -12,6 +15,8 @@ const SPEED_UP_INTERVAL = 100
 // 最低掉落间隔
 const MIN_INTERVAL = 50
 
+const { width: playerWidth } = PLYAYER_OPTIONS
+
 export default class Scheduler {
     constructor() {
         this.$el = null
@@ -19,47 +24,43 @@ export default class Scheduler {
         this.fallInterval = FALL_INTERVAL
         this.gameTimer = null
         this.times = GAME_TIMES
-        this.score = new Score()
+        this.scoreBoard = new ScoreBoard()
         this.player = new Player()
-        this.initTimerBoard()
+        this.timeBoard = new TimeBoard(GAME_TIMES)
+        this.initCheckFallEvent()
         this.gameStart()
     }
 
-    initTimerBoard() {
-        const board = document.createElement('div')
-        board.style.cssText = `
-            position: fixed;
-            z-index: 2;
-            width: 200px;
-            height: 50px;
-            line-height: 50px;
-            text-align: center;
-            left: 0;
-            top: 0;
-            font-size: 30px;
-            font-weight: 700;
-        `
-        var boardText = document.createTextNode(createTimerText(this.times))
-        board.appendChild(boardText)
-        document.body.appendChild(board)
-        this.$el = board
+    // 注册检测碰撞事件
+    initCheckFallEvent() {
+        eventEmitter.on(CHECK_FALL_EVENT, (fallInstance) => {
+            const { posX: playerPosX } = this.player
+            const { posX: fallPosX } = fallInstance
+            const playerLeft = playerPosX - (playerWidth / 2)
+            const playerRight = playerPosX + (playerWidth / 2)
+            // 碰撞到了 就销毁fall实例
+            if (fallPosX >= playerLeft && fallPosX <= playerRight) {
+                eventEmitter.emit(SCORE_EVENT)
+                fallInstance.destroy()
+            }
+        })
     }
 
-    reset() {
-        this.times = GAME_TIMES
-        this.renderTimerText()
-        this.fallInterval = FALL_INTERVAL
-    }
-
+    // 开始游戏
     gameStart() {
         this.reset()
-        this.score.reset()
         this.setFallTimer()
         this.gameTimer = setInterval(() => {
-            this.times--
-            this.renderTimerText()
+            this.setTimes(--this.times)
             this.checkPoint()
         }, 1000)
+    }
+
+    // 重置游戏
+    reset() {
+        this.setTimes(GAME_TIMES)
+        this.fallInterval = FALL_INTERVAL
+        this.scoreBoard.reset()
     }
 
     setFallTimer() {
@@ -70,6 +71,11 @@ export default class Scheduler {
         this.fallTimer = setInterval(() => {
             new Fall()
         }, this.fallInterval)
+    }
+
+    setTimes(times) {
+        this.times = times
+        eventEmitter.emit(TIME_CHANGE_EVENT, times)
     }
 
     checkPoint() {
@@ -92,9 +98,9 @@ export default class Scheduler {
     gameOver() {
         clearInterval(this.gameTimer)
         clearInterval(this.fallTimer)
-        this.score.stopRecord()
-        new dialog(
-            this.score.score,
+        this.scoreBoard.stopRecord()
+        new Dialog(
+            this.scoreBoard.score,
             this.gameStart.bind(this),
             this.goStar.bind(this)
         )
@@ -103,10 +109,4 @@ export default class Scheduler {
     goStar() {
         window.location.href = 'https://github.com/sl1673495/ig-wxz-and-hotdog'
     }
-
-    renderTimerText() {
-        this.$el.innerText = createTimerText(this.times)
-    }
 }
-
-const createTimerText = (times) => `剩余时间${times}秒`

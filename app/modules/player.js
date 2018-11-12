@@ -1,4 +1,4 @@
-import {  screenWidth, safeHeight, addEvent, PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, CHECK_FALL_EVENT, } from '@/utils'
+import { screenWidth, safeHeight, addEvent, PLYAYER_OPTIONS } from '@/utils'
 
 const { width: playerWidth, height: playerHeight, img } = PLYAYER_OPTIONS
 
@@ -8,8 +8,6 @@ export default class Player {
         this.posX = screenWidth / 2 - playerWidth / 2
         this.initPlayer()
         this.initMoveEvent()
-        this.initCheckFallEvent()
-
     }
 
     initPlayer() {
@@ -42,19 +40,6 @@ export default class Player {
             }
         )
     }
-
-    initCheckFallEvent() {
-        eventEmitter.on(CHECK_FALL_EVENT, (fallInstance) => {
-            const { posX } = fallInstance
-            const playerLeft = this.posX - (playerWidth / 2)
-            const playerRight = this.posX + (playerWidth / 2)
-            // 碰撞到了 就销毁fall实例
-            if (posX >= playerLeft && posX <= playerRight) {
-                eventEmitter.emit(SCORE_EVENT)
-                fallInstance.destroy()
-            }
-        })
-    }
 }
 
 const setPositionX = (player, e) => {
@@ -68,8 +53,8 @@ const checkScreenLimit = (x) => {
     const leftLimit = 0 - (playerWidth / 2)
     const rightLimit = screenWidth - (playerWidth / 2)
     return x < leftLimit
-            ? leftLimit
-            : x > rightLimit
-                ? rightLimit 
-                : x
+        ? leftLimit
+        : x > rightLimit
+            ? rightLimit
+            : x
 }
