@@ -1,7 +1,7 @@
 /**
  * 人物
  */
-import { screenWidth, safeHeight, addEvent, PLYAYER_OPTIONS } from '@/utils'
+import { screenWidth, safeHeight, addEvent, PLYAYER_OPTIONS, isUndef } from '@/utils'
 
 const { width: playerWidth, height: playerHeight, img } = PLYAYER_OPTIONS
 
@@ -29,27 +29,34 @@ export default class Player {
 
     initMoveEvent() {
         const body = document.body
+        const moveEvents = ['touchmove', 'mousemove']
         addEvent(body, 'touchstart', e => {
             setPositionX(this, e)
         })
-        addEvent(
-            body,
-            'touchmove',
-            e => {
-                e.preventDefault()
-                setPositionX(this, e)
-            }, {
-                passive: false
-            }
-        )
+        moveEvents.forEach((name) => {
+            addEvent(
+                body,
+                name,
+                e => {
+                    e.preventDefault()
+                    setPositionX(this, e)
+                }, {
+                    passive: false
+                }
+            )
+        })
+        
     }
 }
 
 const setPositionX = (player, e) => {
+    let x = e.pageX
+    if (isUndef(x)) {
+        x = e.touches[0].clientX
+    }
     const { $el } = player
-    const { clientX } = e.touches[0]
-    $el.style.transform = `translateX(${checkScreenLimit(clientX - (playerWidth / 2))}px)`
-    player.posX = clientX
+    $el.style.transform = `translateX(${checkScreenLimit(x - (playerWidth / 2))}px)`
+    player.posX = x
 }
 
 const checkScreenLimit = (x) => {
