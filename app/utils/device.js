@@ -15,4 +15,4 @@ export const safeHeight = needSafe ? 45 : 0
 
 export const screenHeight = window.innerHeight - safeHeight
 
-export const screenWidth = window.innerWidth
+export const screenWidth = Math.max(window.innerWidth, 300)
