@@ -1,3 +1,6 @@
+/**
+ * 得分提示
+ */
 import { PLYAYER_OPTIONS, safeHeight, addEvent, removeNode } from '@/utils'
 
 const { height: playerHeight } = PLYAYER_OPTIONS

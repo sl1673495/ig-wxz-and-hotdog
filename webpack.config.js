@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
+const resolve = (name) => path.join(__dirname, name)
+
 module.exports = {
     entry: ['babel-polyfill', './app/index.js'],
     output: {
@@ -9,7 +11,8 @@ module.exports = {
     },
     resolve: {
         alias: {
-            '@': path.join(__dirname,"./app"),
+            '@': resolve("./app"),
+            'store': resolve("./app/store")
         },
         extensions: ['', '.js', '.json'],
     },

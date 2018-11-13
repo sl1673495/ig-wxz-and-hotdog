@@ -1,21 +1,17 @@
 /**
  * 计分板
  */
-import { eventEmitter, SCORE_EVENT } from '@/utils'
-export default class Score {
+import {
+    setScore,
+    getScore,
+    subscribeScore,
+    getSeconds
+} from 'store'
+class Score {
     constructor() {
         this.$el = null
-        this.score = 0
-        this.stop = false
-
         this.initScore()
-        this.initEvent()
-    }
-
-    reset() {
-        this.score = 0
-        this.stop = false
-        this.setScore()
+        subscribeScore(this.renderScore.bind(this))
     }
 
     initScore() {
@@ -32,30 +28,20 @@ export default class Score {
             font-size: 30px;
             font-weight: 700;
         `
-        var scoreText = document.createTextNode(this.score)
-        score.appendChild(scoreText)
-        document.body.appendChild(score)
         this.$el = score
-    }
-
-    initEvent() {
-        eventEmitter.on(SCORE_EVENT, (bounus) => {
-            if (!this.stop) {
-                this.addScore(bounus)
-            }
-        })
+        document.body.appendChild(score)
     }
 
     addScore(bounus) {
-        this.score += bounus
-        this.setScore()
+        const seconds = getSeconds()
+        if (seconds !== 0) {
+            setScore(getScore() + bounus)
+        }
     }
-
-    setScore() {
-        this.$el.innerText = this.score
-    }
-
-    stopRecord() {
-        this.stop = true
+    
+    renderScore() {
+        this.$el.innerText = getScore()
     }
 }
+
+export default Score

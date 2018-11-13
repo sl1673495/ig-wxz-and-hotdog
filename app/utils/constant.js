@@ -9,9 +9,6 @@ export const DIALOG_OPTIONS = {
     height: 200,
 }
 
-// 得分事件
-export const SCORE_EVENT = 'score'
-
 // 坠落到底事件
 export const CHECK_FALL_EVENT = 'checkFall'
 

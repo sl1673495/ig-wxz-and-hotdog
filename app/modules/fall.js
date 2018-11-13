@@ -5,7 +5,6 @@ import {
     screenWidth,
     screenHeight,
     PLYAYER_OPTIONS,
-    FALL_OPTIONS,
     CHECK_FALL_EVENT,
     removeNode,
     eventEmitter,

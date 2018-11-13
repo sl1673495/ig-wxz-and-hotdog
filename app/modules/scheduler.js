@@ -1,7 +1,7 @@
 /**
  * 调度器
  */
-import { PLYAYER_OPTIONS, eventEmitter, SCORE_EVENT, CHECK_FALL_EVENT, TIME_CHANGE_EVENT } from '@/utils'
+import { PLYAYER_OPTIONS, eventEmitter, CHECK_FALL_EVENT, } from '@/utils'
 
 import Fall from './fall'
 import ScoreBoard from './score-board'
@@ -9,6 +9,12 @@ import Player from './player'
 import Dialog from './dialog'
 import TimeBoard from './time-board'
 import BounusPoint from './bounus-point'
+import {
+    setScore,
+    getScore,
+    setSeconds,
+    getSeconds
+} from 'store'
 
 // 游戏时间
 const GAME_TIMES = 30
@@ -29,11 +35,10 @@ export default class Scheduler {
         this.gameTimer = null
 
         this.fallInterval = FALL_INTERVAL
-        this.residualSeconds = GAME_TIMES
 
         this.scoreBoard = new ScoreBoard()
         this.player = new Player()
-        this.timeBoard = new TimeBoard(GAME_TIMES)
+        this.timeBoard = new TimeBoard()
 
         this.initCheckFallEvent()
         this.gameStart()
@@ -48,7 +53,7 @@ export default class Scheduler {
             const playerRight = playerPosX + (playerWidth / 2)
             // 碰撞到了 就销毁fall实例
             if (fallPosX >= playerLeft && fallPosX <= playerRight) {
-                eventEmitter.emit(SCORE_EVENT, bounus)
+                setScore(getScore() + bounus)
                 fallInstance.destroy()
                 new BounusPoint(playerPosX, bounus)
             }
@@ -60,16 +65,16 @@ export default class Scheduler {
         this.reset()
         this.setFallTimer()
         this.gameTimer = setInterval(() => {
-            this.setTimes(--this.residualSeconds)
+            setSeconds(getSeconds() - 1)
             this.checkPoint()
         }, 1000)
     }
 
     // 重置游戏
     reset() {
-        this.setTimes(GAME_TIMES)
+        setScore(0)
+        setSeconds(GAME_TIMES)
         this.fallInterval = FALL_INTERVAL
-        this.scoreBoard.reset()
     }
 
     setFallTimer() {
@@ -82,18 +87,14 @@ export default class Scheduler {
         }, this.fallInterval)
     }
 
-    setTimes(seconds) {
-        this.residualSeconds = seconds
-        eventEmitter.emit(TIME_CHANGE_EVENT, seconds)
-    }
-
     checkPoint() {
-        if (this.residualSeconds === 0) {
+        const seconds = getSeconds()
+        if (seconds === 0) {
             this.gameOver()
             return
         }
 
-        if (this.residualSeconds % 5 === 0) {
+        if (seconds % 5 === 0) {
             this.speedUp()
         }
     }
@@ -107,9 +108,7 @@ export default class Scheduler {
     gameOver() {
         clearInterval(this.gameTimer)
         clearInterval(this.fallTimer)
-        this.scoreBoard.stopRecord()
         new Dialog(
-            this.scoreBoard.score,
             this.gameStart.bind(this),
             this.goStar.bind(this)
         )

@@ -2,12 +2,13 @@
  * 游戏结束对话框
  */
 import { screenWidth, DIALOG_OPTIONS, addEvent, removeNode, noop } from '@/utils'
-
+import {
+    getScore,
+} from 'store'
 const { width, height } = DIALOG_OPTIONS
 
 export default class Dialog {
-    constructor(score, onLeftClick, onRightclick) {
-        this.score = score
+    constructor(onLeftClick, onRightclick) {
         this.onLeftClick = onLeftClick ? () => {
             this.destory()
             onLeftClick()
@@ -31,7 +32,7 @@ export default class Dialog {
             font-weight: 700;
         `
         const endText = createText('游戏结束', 'font-size: 30px;')
-        const scoreText = createText(`${this.score}分`, 'font-size: 30px;')
+        const scoreText = createText(`${getScore()}分`, 'font-size: 30px;')
 
         const restartBtn = createButton('replay', this.onLeftClick, 'left: 20px;')
         const starBtn = createButton('❤star', this.onRightClick, 'right: 20px;')
