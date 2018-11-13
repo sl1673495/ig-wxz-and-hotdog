@@ -32,7 +32,7 @@ export default class Scheduler {
         this.$el = null
 
         this.fallTimer = null
-        this.gameTimer = null
+        this.secondsTimer = null
 
         this.fallInterval = FALL_INTERVAL
 
@@ -64,10 +64,7 @@ export default class Scheduler {
     gameStart() {
         this.reset()
         this.setFallTimer()
-        this.gameTimer = setInterval(() => {
-            setSeconds(getSeconds() - 1)
-            this.checkPoint()
-        }, 1000)
+        this.setSecondsTimer()
     }
 
     // 重置游戏
@@ -85,6 +82,13 @@ export default class Scheduler {
         this.fallTimer = setInterval(() => {
             new Fall()
         }, this.fallInterval)
+    }
+
+    setSecondsTimer() {
+        this.secondsTimer = setInterval(() => {
+            setSeconds(getSeconds() - 1)
+            this.checkPoint()
+        }, 1000)
     }
 
     checkPoint() {
@@ -106,7 +110,7 @@ export default class Scheduler {
     }
 
     gameOver() {
-        clearInterval(this.gameTimer)
+        clearInterval(this.secondsTimer)
         clearInterval(this.fallTimer)
         new Dialog(
             this.gameStart.bind(this),
