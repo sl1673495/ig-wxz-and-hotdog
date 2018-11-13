@@ -18,7 +18,7 @@ class ReactiveStore {
     }
 
     const subscribe = (fn) => {
-      this.subscribe(key, fn)
+      return this.subscribe(key, fn)
     }
 
     return {
@@ -41,8 +41,16 @@ class ReactiveStore {
     return this._store[key]
   }
 
-  subscribe(key, fn) {
-    (this._listeners[key] || (this._listeners[key] = [])).push(fn)
+  // 订阅某个key的set执行fn回调
+  subscribe(key, cb) {
+    (this._listeners[key] || (this._listeners[key] = [])).push(cb)
+
+    // return unsubscribe
+    return () => {
+      const cbs = this._listeners[key]
+      const i = cbs.findIndex(f => cb === f)
+      cbs.splice(i, 1)
+    }
   }
 }
 

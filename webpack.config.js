@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 
-const resolve = (name) => path.join(__dirname, name)
+var resolve = function(name) {return path.join(__dirname, name) }
 
 module.exports = {
     entry: ['babel-polyfill', './app/index.js'],
