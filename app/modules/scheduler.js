@@ -13,7 +13,7 @@ import {
     setScore,
     getScore,
     setSeconds,
-    getSeconds
+    getSeconds,
 } from 'store'
 
 // 游戏时间
@@ -30,15 +30,13 @@ const { width: playerWidth } = PLYAYER_OPTIONS
 export default class Scheduler {
     constructor() {
         this.$el = null
-
         this.fallTimer = null
         this.secondsTimer = null
-
         this.fallInterval = FALL_INTERVAL
 
-        this.scoreBoard = new ScoreBoard()
         this.player = new Player()
         this.timeBoard = new TimeBoard()
+        this.scoreBoard = new ScoreBoard()
 
         this.initCheckFallEvent()
         this.gameStart()
@@ -78,7 +76,6 @@ export default class Scheduler {
         if (this.fallTimer) {
             clearInterval(this.fallTimer)
         }
-
         this.fallTimer = setInterval(() => {
             new Fall()
         }, this.fallInterval)
@@ -97,7 +94,6 @@ export default class Scheduler {
             this.gameOver()
             return
         }
-
         if (seconds % 5 === 0) {
             this.speedUp()
         }
