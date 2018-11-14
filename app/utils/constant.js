@@ -1,5 +1,5 @@
 export const PLYAYER_OPTIONS = {
-    img: require('@/assets/images/sicong.png'),
+    img: require('@/assets/images/sicong.jpg'),
     width: 70,
     height: 70,
 }

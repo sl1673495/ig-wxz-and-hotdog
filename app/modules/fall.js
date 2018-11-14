@@ -16,14 +16,14 @@ const INTERVAL_DISTANCE = 15
 const CUP = {
     width: 50,
     height: 100,
-    img: require('@/assets/images/cup.png'),
+    img: require('@/assets/images/cup.jpg'),
     bounus: 5,
 }
 
 const HOT_DOG = {
     width: 20,
     height: 50,
-    img: require('@/assets/images/hotdog.png'),
+    img: require('@/assets/images/hotdog.jpg'),
     bounus: 1,
 }
 
