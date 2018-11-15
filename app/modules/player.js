@@ -29,7 +29,6 @@ export default class Player {
 
     initMoveEvent() {
         const body = document.body
-        const moveEvents = ['touchmove', 'mousemove']
         
         addEvent(
             body,
@@ -38,19 +37,18 @@ export default class Player {
                 setPositionX(this, e)
             })
 
-        moveEvents.forEach((name) => {
-            addEvent(
-                body,
-                name,
-                e => {
-                    e.preventDefault()
-                    setPositionX(this, e)
-                },
-                {
-                    passive: false
-                }
-            )
-        })
+        const moveEvent = 'ontouchmove' in window ? 'touchmove' : 'mousemove'
+        addEvent(
+            body,
+            moveEvent,
+            e => {
+                e.preventDefault()
+                setPositionX(this, e)
+            },
+            {
+                passive: false
+            }
+        )
 
     }
 }

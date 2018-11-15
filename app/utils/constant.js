@@ -12,5 +12,3 @@ export const DIALOG_OPTIONS = {
 // 坠落到底事件
 export const CHECK_FALL_EVENT = 'checkFall'
 
-// 时间改变事件
-export const TIME_CHANGE_EVENT = 'timeChange'
