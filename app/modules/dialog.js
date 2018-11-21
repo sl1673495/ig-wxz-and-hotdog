@@ -24,7 +24,7 @@ export default class Dialog {
             z-index: 2;
             width: ${width}px;
             height: ${height}px;
-            padding-top: 25px;
+            padding-top: 20px;
             border: 2px solid black;
             text-align: center;
             left: ${screenWidth / 2 - width / 2}px;

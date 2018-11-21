@@ -6,7 +6,7 @@ export const PLYAYER_OPTIONS = {
 
 export const DIALOG_OPTIONS = {
     width: 250,
-    height: 200,
+    height: 170,
 }
 
 // 坠落到底事件
